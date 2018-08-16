@@ -1,0 +1,6 @@
+{
+    "development": {
+        "host": "http://192.168.100.197:3000/",
+        "sandbox" : "rubenb364@gmail.com"
+    }
+}
