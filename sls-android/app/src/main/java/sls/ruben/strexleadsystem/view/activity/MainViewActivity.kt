@@ -11,8 +11,10 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_view.*
 import kotlinx.android.synthetic.main.app_bar_main_view.*
 import sls.ruben.strexleadsystem.R
+import sls.ruben.strexleadsystem.view.fragment.LeadFragment
+import sls.ruben.strexleadsystem.view.fragment.dummy.DummyContent
 
-class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LeadFragment.OnListFragmentInteractionListener {
 
     // This is BAD!!!
     var showAll = false
@@ -52,7 +54,7 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         return when (item.itemId) {
             R.id.action_view -> {
                 showAll = !showAll
-                Snackbar.make(nav_view,
+                Snackbar.make(fab,
                         if (showAll) "Showing all leads" else "Showing my leads",
                         Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 true
@@ -80,4 +82,9 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+        Snackbar.make(fab, item!!.details, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+    }
+
 }
