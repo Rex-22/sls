@@ -1,4 +1,4 @@
-package sls.ruben.strexleadsystem
+package sls.ruben.strexleadsystem.view.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,14 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_lead_view.*
-import kotlinx.android.synthetic.main.app_bar_lead_view.*
+import kotlinx.android.synthetic.main.activity_main_view.*
+import kotlinx.android.synthetic.main.app_bar_main_view.*
+import sls.ruben.strexleadsystem.R
 
-class LeadViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    // This is BAD!!!
+    var showAll = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lead_view)
+        setContentView(R.layout.activity_main_view)
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
@@ -40,35 +44,35 @@ class LeadViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.lead_view, menu)
+        menuInflater.inflate(R.menu.main_view, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_view -> {
+                showAll = !showAll
+                Snackbar.make(nav_view,
+                        if (showAll) "Showing all leads" else "Showing my leads",
+                        Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_camera -> {
+            R.id.nav_lead -> {
 
             }
-            R.id.nav_gallery -> {
+            R.id.nav_company -> {
 
             }
-            R.id.nav_slideshow -> {
+            R.id.nav_report -> {
 
             }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
+            R.id.nav_setting -> {
 
             }
         }

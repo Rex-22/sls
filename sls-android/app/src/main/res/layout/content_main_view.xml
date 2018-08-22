@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".LeadViewActivity"
-    tools:showIn="@layout/app_bar_lead_view">
+    tools:context=".view.activity.MainViewActivity"
+    tools:showIn="@layout/app_bar_main_view">
 
     <TextView
         android:layout_width="wrap_content"
