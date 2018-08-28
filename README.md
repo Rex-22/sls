@@ -1,5 +1,14 @@
 # Strex Lead System
 
+## Index
+
+- [Information](#Information)
+- [Setup](#Setup)
+    - [API](#API)
+        - [Database](#Database)
+        - [Node](#Node)
+    - [Android](#Android)
+
 ## Information
 
 A lead management system developed as part of the ITSP200 project for BsC IT degree.
@@ -10,7 +19,7 @@ A lead management system developed as part of the ITSP200 project for BsC IT deg
 
 #### Database
 
-1. Download and install mySQL
+1. Download and install mySQL ([Download here](https://dev.mysql.com/downloads/installer/))
 2. Create a new user and call it sls_test and give it all admin permisions and make the password 'password'
 3. Create a new database called sls_development
 
@@ -23,7 +32,7 @@ A lead management system developed as part of the ITSP200 project for BsC IT deg
 5. Start the server `npm start`
 
 Goto http://loclahost:3000/v1/ and you should see this page
->![Website](res/website.png)
+![Website](res/website.png)
 
 ### Android
 
