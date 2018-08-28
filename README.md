@@ -1,17 +1,14 @@
 # Strex Lead System
 
-## Index
-
-- [Information](#Information)
-- [Setup](#Setup)
-    - [API](#API)
-        - [Database](#Database)
-        - [Node](#Node)
-    - [Android](#Android)
-
-## Information
-
 A lead management system developed as part of the ITSP200 project for BsC IT degree.
+
+## Table of content
+
+- [Setup](#setup)
+    - [API](#api)
+        - [Database](#Database)
+        - [Node](#node)
+    - [Android](#android)
 
 ## Setup
 
