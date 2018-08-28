@@ -6,7 +6,7 @@ A lead management system developed as part of the ITSP200 project for BsC IT deg
 
 - [Setup](#setup)
     - [API](#api)
-        - [Database](#Database)
+        - [Database](#database)
         - [Node](#node)
     - [Android](#android)
 
