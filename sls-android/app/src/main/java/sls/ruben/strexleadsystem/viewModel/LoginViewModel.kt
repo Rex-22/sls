@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.schedulers.Schedulers
 import sls.ruben.strexleadsystem.model.StaffModel
+import sls.ruben.strexleadsystem.prefService
 import sls.ruben.strexleadsystem.repository.MasterRepository
 import sls.ruben.strexleadsystem.util.Error
 import tech.bitcube.sabu.network.OnConnectionTimeoutListeners
@@ -29,6 +30,9 @@ class LoginViewModel: ViewModel(), OnConnectionTimeoutListeners {
                 .subscribe { response ->
                     if (response.isSuccessful){
                         val model = response.body()!!
+                        prefService.authKey = model.authToken
+                        prefService.id = model.id.toString()
+                        prefService.userStored = true
                         model.errorCode = Error.NONE
                         _staffModel.postValue(model)
                     }else {
@@ -38,6 +42,12 @@ class LoginViewModel: ViewModel(), OnConnectionTimeoutListeners {
                             _staffModel.postValue(StaffModel(errorCode = Error.INVALID_EMAIL))
                     }
                 }
+    }
+
+    fun logout() {
+        prefService.userStored = false
+        prefService.id = ""
+        prefService.authKey = ""
     }
 
     override fun onConnectionTimeout() {
