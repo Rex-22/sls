@@ -17,11 +17,9 @@ class MasterRepository {
 
     fun login(username: String, password: String): Flowable<Response<StaffModel>>{
         val staff = StaffModel(
-                id = 0,
                 username = username,
                 email = username,
-                password =  password,
-                authToken = ""
+                password =  password
         )
         return api.authStaff(staff)
     }
