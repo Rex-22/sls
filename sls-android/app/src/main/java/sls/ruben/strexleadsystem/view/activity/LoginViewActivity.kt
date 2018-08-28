@@ -67,7 +67,7 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             return true
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(email, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(username, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok
                     ) { requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS) }
         } else {
@@ -88,7 +88,6 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
     }
 
-
     /**
      * Attempts to login or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -96,11 +95,11 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      */
     private fun attemptLogin() {
         // Reset errors.
-        email.error = null
+        username.error = null
         password.error = null
 
         // Store values at the time of the login attempt.
-        val emailStr = email.text.toString()
+        val emailStr = username.text.toString()
         val passwordStr = password.text.toString()
 
         var cancel = false
@@ -113,10 +112,15 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             cancel = true
         }
 
-        // Check for a valid email address.
         if (TextUtils.isEmpty(emailStr)) {
-            email.error = getString(R.string.error_field_required)
-            focusView = email
+            username.error = getString(R.string.error_field_required)
+            focusView = username
+            cancel = true
+        }
+
+        if (TextUtils.isEmpty(passwordStr)) {
+            password.error = getString(R.string.error_field_required)
+            focusView = password
             cancel = true
         }
 
@@ -140,8 +144,8 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         showProgress(false)
 
         if (model.errorCode == Error.NONE) gotoMain()
-        if (model.errorCode == Error.TIME_OUT) Snackbar.make(email, getString(R.string.error_timeout), Snackbar.LENGTH_LONG).show()
-        if (model.errorCode == Error.INVALID_EMAIL) email.error = getString(R.string.error_invalid_email)
+        if (model.errorCode == Error.TIME_OUT) Snackbar.make(username, getString(R.string.error_timeout), Snackbar.LENGTH_LONG).show()
+        if (model.errorCode == Error.INVALID_EMAIL) username.error = getString(R.string.error_invalid_email)
         if (model.errorCode == Error.INVALID_PASSWORD)  password.error = getString(R.string.error_invalid_password)
     }
 
@@ -227,7 +231,7 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         val adapter = ArrayAdapter(this@LoginViewActivity,
                 android.R.layout.simple_dropdown_item_1line, emailAddressCollection)
 
-        email.setAdapter(adapter)
+        username.setAdapter(adapter)
     }
 
     object ProfileQuery {
