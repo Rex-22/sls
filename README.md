@@ -26,7 +26,9 @@ A lead management system developed as part of the ITSP200 project for BsC IT deg
 2. (Optional) Install sequalize-cli `npm install -g sequelize-cli`
 3. Open command prompt (WinKey+R cmd) and navigate to where sls-api is located (eg. cd C:/dev/sls/sls-api)
 4. Enter `npm update` and wait
-5. Start the server `npm start`
+5. Migrate the database (`sequelize db:migrate`)
+6. Seed the database (`sequelize db:seed:all`)
+7. Start the server `npm start`
 
 Goto http://loclahost:3000/v1/ and you should see this page
 ![Website](res/website.png)
