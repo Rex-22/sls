@@ -16,7 +16,7 @@ object ApiService {
 
     private const val API_VERSION: String = "v1"
     //    val API_URL = "http://127.0.0.1:3000/$API_VERSION/" // When using an emulator, use this one
-    const val API_URL = "http://192.168.100.197:3000/$API_VERSION/"
+    const val API_URL = "http://10.143.59.208:3000/$API_VERSION/"
 
     private var listeners = ArrayList<OnConnectionTimeoutListeners>()
 

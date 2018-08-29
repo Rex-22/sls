@@ -25,10 +25,6 @@ val database: RoomDatabase by lazy {
     App.database!!
 }
 
-val api: ApiService by lazy {
-    App.api!!
-}
-
 class App : Application() {
 
     companion object {
@@ -60,8 +56,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         prefs = PrefService(applicationContext)
-
-        api = ApiService
 
         database = Room.databaseBuilder(this, AppDatabase::class.java, "sabu")
                 .fallbackToDestructiveMigration()
