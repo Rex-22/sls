@@ -9,6 +9,7 @@ A lead management system developed as part of the ITSP200 project for BsC IT deg
         - [Database](#database)
         - [Node](#node)
     - [Android](#android)
+    - [Troubleshoot](#troubleshoot)
 
 ## Setup
 
@@ -65,5 +66,5 @@ Goto http://loclahost:3000/v1/ and you should see this page
 Q. I get 'mysql client does not support authentication protocol requested by server; consider upgrading mysql client' when trying to use sequalize commands in node
 A. In MySQL workbench run the following 
 ```sql
-ALTER USER 'sls_dev'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
+ALTER USER 'sls_dev'@'%' IDENTIFIED WITH mysql_native_password BY 'password'
 ```
