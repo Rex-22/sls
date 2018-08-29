@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 const staffController = require('../controllers/staffController');
+const leadController = require('../controllers/leadController');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -17,5 +18,9 @@ router.get('/ping', (req, res, next) => {
 /* STAFF */
 router.post("/staff/register", staffController.register);
 router.post("/staff/authenticate", staffController.authenticate);
+
+/* LEAD */
+router.get("/leads/:id", leadController.get)
+router.get("/leads", leadController.list)
 
 module.exports = router;

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         isEmail: {
-          msg: 'This is an invallid username'
+          msg: 'This is an invallid email'
         }
       }
     },
@@ -24,20 +24,20 @@ module.exports = (sequelize, DataTypes) => {
     remember_token: DataTypes.TEXT
   }, {
     underscored: true,
-      timestamps: true,
-      paranoid: true,
-      hooks: {
-        beforeSave: (staff, options) => {
-          return new Promise((resolve, reject) => {
-            if (staff.changed('password')) {
-              var salt = bcrypt.genSaltSync(10);
-              var hash = bcrypt.hashSync(staff.password, salt);
-              staff.password = hash;
-            }
-            resolve();
-          });
-        }
+    timestamps: true,
+    paranoid: true,
+    hooks: {
+      beforeSave: (staff, options) => {
+        return new Promise((resolve, reject) => {
+          if (staff.changed('password')) {
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(staff.password, salt);
+            staff.password = hash;
+          }
+          resolve();
+        });
       }
+    }
   });
   staff.associate = (models) => {
     staff.belongsToMany(models.roles, {
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     });
   };
-  
+
   staff.prototype.setToken = function () {
     return new Promise((resolve, reject) => {
 
@@ -71,7 +71,9 @@ module.exports = (sequelize, DataTypes) => {
         payload.iat = new Date().getTime();
 
         var token = jwt.encode(payload, 'iaarb-naj-sls');
-        this.update({ remember_token: token }).then( (staff) => {
+        this.update({
+          remember_token: token
+        }).then((staff) => {
           resolve(staff);
         });
       });

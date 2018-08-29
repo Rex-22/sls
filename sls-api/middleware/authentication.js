@@ -36,7 +36,6 @@ module.exports = function (acl, models) {
                     }       
                 }).then((staff) => {
                     if (staff) {
-
                             res.locals.staff_id = staff.id;
                             res.locals.is_app_user = decoded.roles[0] == 'app-user';
                             var resource = req.baseUrl.split('/')[2];
@@ -44,6 +43,7 @@ module.exports = function (acl, models) {
                             if (resource) {
                                 resource = resource.toLowerCase();
                             }
+                            
                             acl.areAnyRolesAllowed(decoded.roles[0], resource, req.method, function(err, allowed) {
                                 if (err) {
                                     res.statu(500).json({ message: 'Error while checking permissions' });

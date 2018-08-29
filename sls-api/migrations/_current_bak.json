@@ -44,10 +44,10 @@
                     "autoIncrement": true,
                     "seqType": "Sequelize.INTEGER"
                 },
-                "first_name": {
+                "firstName": {
                     "seqType": "Sequelize.STRING"
                 },
-                "last_name": {
+                "lastName": {
                     "seqType": "Sequelize.STRING"
                 },
                 "email": {
@@ -75,7 +75,7 @@
                     },
                     "seqType": "Sequelize.STRING"
                 },
-                "date_added": {
+                "dateAdded": {
                     "seqType": "Sequelize.DATE"
                 },
                 "created_at": {
@@ -229,5 +229,5 @@
             "indexes": []
         }
     },
-    "revision": 6
+    "revision": 5
 }
