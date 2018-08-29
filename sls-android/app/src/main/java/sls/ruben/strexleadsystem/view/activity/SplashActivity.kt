@@ -18,10 +18,7 @@ class SplashActivity : AppCompatActivity() {
         ))
 
         finish()
-
-        // Simulate startup
+   // Simulate startup
         Thread.sleep(2000)
-
-        finish()
     }
 }
