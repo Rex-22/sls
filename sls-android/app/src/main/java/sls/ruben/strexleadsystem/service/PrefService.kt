@@ -9,6 +9,7 @@ class PrefService(context: Context) {
     private val AUTH_KEY = "token"
     private val ID = "id"
     private val USER_STORED = "user_stored"
+    private val NO_SERVER_CONNECTION = "no_server_connection"
 
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFERENCES_FILENAME, 0)
 
@@ -23,4 +24,8 @@ class PrefService(context: Context) {
     var userStored: Boolean
         get() = sharedPreferences.getBoolean(USER_STORED, false)
         set(value) = sharedPreferences.edit().putBoolean(USER_STORED, value).apply()
+
+    var noServerConnection: Boolean
+        get() = sharedPreferences.getBoolean(NO_SERVER_CONNECTION, false)
+        set(value) = sharedPreferences.edit().putBoolean(NO_SERVER_CONNECTION, value).apply()
 }
