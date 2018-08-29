@@ -38,5 +38,6 @@
         completions."
     </string>
     <string name="action_logout">Logout</string>
+    <string name="error_no_server_connection">No connection to server, please check your internet connection</string>
 
 </resources>

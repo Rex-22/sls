@@ -36,6 +36,11 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                     .setAction("Action", null).show()
         }
 
+        if (prefService.noServerConnection) {
+            Snackbar.make(findViewById(R.id.fab), getString(R.string.error_no_server_connection), Snackbar.LENGTH_LONG)
+                    .show()
+        }
+
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)

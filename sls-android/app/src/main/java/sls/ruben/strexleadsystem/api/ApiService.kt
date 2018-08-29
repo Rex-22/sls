@@ -1,6 +1,7 @@
 package sls.ruben.strexleadsystem.api
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import io.reactivex.internal.util.ExceptionHelper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -22,6 +23,7 @@ object ApiService {
 
     var api: Retrofit? = null
         private set
+    lateinit var common: CommonAPIService
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -41,6 +43,8 @@ object ApiService {
                 .baseUrl(API_URL)
                 .client(okHttpClient)
                 .build()
+
+        common = api!!.create(CommonAPIService::class.java)
     }
 
     /**
