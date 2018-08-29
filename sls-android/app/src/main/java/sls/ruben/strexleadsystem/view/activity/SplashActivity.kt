@@ -12,11 +12,12 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
         startActivity(Intent(
                 this@SplashActivity,
                 if (prefService.userStored) MainViewActivity::class.java else LoginViewActivity::class.java
         ))
+
+        finish()
 
         // Simulate startup
         Thread.sleep(2000)
