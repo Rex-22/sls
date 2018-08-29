@@ -26,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import sls.ruben.strexleadsystem.R
 import sls.ruben.strexleadsystem.model.StaffModel
-import sls.ruben.strexleadsystem.prefService
 import sls.ruben.strexleadsystem.util.Error
 import sls.ruben.strexleadsystem.viewModel.LoginViewModel
 import java.util.*
@@ -41,11 +40,6 @@ class LoginViewActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         loginViewModel.staffModel.observe(this, Observer { onLogin(it!!) })
-
-        if (prefService.noServerConnection){
-            Snackbar.make(findViewById(R.id.email_sign_in_button), getString(R.string.error_no_server_connection), Snackbar.LENGTH_LONG)
-                    .show()
-        }
 
         // Set up the login form.
         populateAutoComplete()
