@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 /* GET */
 (exports.get = (req, res, next) => {
-    models.leads.findOne({
+    models.companies.findOne({
         where: {
             id: req.params.id
         },
@@ -15,22 +15,17 @@ var _ = require('lodash');
             exclude: helper.time_stamps
         },
         include: [{
-            model: models.staff,
-            attributes: {
-                exclude: helper.time_stamps.concat(['remember_token', 'fcm_token', 'password'])
-            },
-        }, {
-            model: models.companies,
+            model: models.leads,
             attributes: {
                 exclude: helper.time_stamps
-            }
+            },
         }]
-    }).then((lead) => {
-        if (lead != null) {
-            res.status(200).json(lead)
+    }).then((companie) => {
+        if (companie != null) {
+            res.status(200).json(companie)
         } else {
             res.status(404)
-                .json('Lead not found')
+                .json('Companie not found')
         }
     })
 }),
@@ -38,27 +33,22 @@ var _ = require('lodash');
     (exports.list = (req, res, next) => {
         let limit = parseInt(req.query.pageSize, 10);
         let offset = 0;
-        models.leads
+        models.companies
             .count().then((count) => {
                 let page = parseInt(req.query.page, 10);
                 offset = limit * (page - 1);
 
-                models.leads.findAll({
+                models.companies.findAll({
                     limit: limit || null,
                     offset: offset || null,
                     attributes: {
                         exclude: helper.time_stamps,
                     },
                     include: [{
-                        model: models.staff,
-                        attributes: {
-                            exclude: helper.time_stamps.concat(['remember_token', 'fcm_token', 'password'])
-                        },
-                    }, {
-                        model: models.companies,
+                        model: models.leads,
                         attributes: {
                             exclude: helper.time_stamps
-                        }
+                        },
                     }]
                 }).then(results => {
                     if (!limit)
@@ -79,8 +69,8 @@ var _ = require('lodash');
     }),
     /* CREATE */
     (exports.create = (req, res, next) => {
-        models.leads.create(req.body).then((lead) => {
-            res.status(201).json(lead)
+        models.companies.create(req.body).then((companie) => {
+            res.status(201).json(companie)
         }).catch(Sequelize.ValidationError, (err) => {
             var result = {};
             result.errors = helper.PrettyPrint(err);
@@ -91,7 +81,7 @@ var _ = require('lodash');
     }),
     /* UPDATE */
     (exports.update = function (req, res, next) {
-        models.leads
+        models.companies
             .findOne({
                 where: {
                     id: req.params.id
@@ -114,7 +104,7 @@ var _ = require('lodash');
     }),
     /* DELLETE */
     (exports.delete = function (req, res, next) {
-        models.leads.destroy({
+        models.companies.destroy({
             where: {
                 id: req.params.id
             }

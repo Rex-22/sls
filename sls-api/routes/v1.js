@@ -4,6 +4,7 @@ var router = express.Router();
 
 const staffController = require('../controllers/staffController');
 const leadController = require('../controllers/leadController');
+const companieController = require('../controllers/companieController');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -25,5 +26,12 @@ router.get("/leads", leadController.list)
 router.post("/leads", leadController.create)
 router.put("/leads/:id", leadController.update)
 router.delete("/leads/:id", leadController.delete)
+
+/* COMPANIE */
+router.get("/companie/:id", companieController.get)
+router.get("/companie", companieController.list)
+router.post("/companie", companieController.create)
+router.put("/companie/:id", companieController.update)
+router.delete("/companie/:id", companieController.delete)
 
 module.exports = router;
