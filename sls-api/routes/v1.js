@@ -22,5 +22,8 @@ router.post("/staff/authenticate", staffController.authenticate);
 /* LEAD */
 router.get("/leads/:id", leadController.get)
 router.get("/leads", leadController.list)
+router.post("/leads", leadController.create)
+router.put("/leads/:id", leadController.update)
+router.delete("/leads/:id", leadController.delete)
 
 module.exports = router;

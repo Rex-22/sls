@@ -62,4 +62,48 @@ var _ = require('lodash');
             }).catch((err) => {
                 return res.status(500).json(ex);
             })
+    }),
+    /* CREATE */
+    (exports.create = (req, res, next) => {
+        models.leads.create(req.body).then((lead) => {
+            res.status(201).json(lead)
+        }).catch(Sequelize.ValidationError, (err) => {
+            var result = {};
+            result.errors = helper.PrettyPrint(err);
+            res.status(422).json(result);
+        }).catch(function (err) {
+            res.status(500).json(err);
+        });
+    }),
+    /* UPDATE */
+    (exports.update = function (req, res, next) {
+        models.leads
+            .findOne({
+                where: {
+                    id: req.params.id
+                }
+            }).then((model) => {
+                if (model) {
+                    model.update(req.body).then((result) => {
+                        res.status(200).json(_.pick(result, "id"))
+                    }).catch(Sequelize.ValidationError, (err) => {
+                        var result = {};
+                        result.message = helper.PrettyPrint(err);
+                        res.status(422).json(result);
+                    }).catch((err) => {
+                        res.status(500).json(err);
+                    });
+                } else {
+                    res.status(404).send();
+                }
+            });
+    }),
+    /* DELLETE */
+    (exports.delete = function (req, res, next) {
+        models.leads.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(202).send();
     });
