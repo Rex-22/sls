@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   leads.associate = function(models) {
     leads.belongsTo(models.staff);
+    leads.belongsTo(models.companies);
   };
   return leads;
 };
