@@ -28,10 +28,10 @@ router.put("/leads/:id", leadController.update)
 router.delete("/leads/:id", leadController.delete)
 
 /* COMPANIE */
-router.get("/companie/:id", companieController.get)
-router.get("/companie", companieController.list)
-router.post("/companie", companieController.create)
-router.put("/companie/:id", companieController.update)
-router.delete("/companie/:id", companieController.delete)
+router.get("/companies/:id", companieController.get)
+router.get("/companies", companieController.list)
+router.post("/companies", companieController.create)
+router.put("/companies/:id", companieController.update)
+router.delete("/companies/:id", companieController.delete)
 
 module.exports = router;

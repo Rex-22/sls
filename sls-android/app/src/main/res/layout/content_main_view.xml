@@ -8,15 +8,28 @@
     tools:context=".view.activity.MainViewActivity"
     tools:showIn="@layout/app_bar_main_view">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment"
         android:name="sls.ruben.strexleadsystem.view.fragment.LeadFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_lead_list" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <!--<FrameLayout-->
+    <!--android:id="@+id/fragment"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--tools:layout="@layout/fragment_lead_list" >-->
+
+    <!--</FrameLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

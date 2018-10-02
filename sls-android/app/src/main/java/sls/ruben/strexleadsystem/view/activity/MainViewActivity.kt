@@ -13,23 +13,26 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_view.*
 import kotlinx.android.synthetic.main.app_bar_main_view.*
 import sls.ruben.strexleadsystem.R
-import sls.ruben.strexleadsystem.prefService
+import sls.ruben.strexleadsystem.model.CompanyModel
+import sls.ruben.strexleadsystem.model.LeadModel
+import sls.ruben.strexleadsystem.view.fragment.CompanyFragment
 import sls.ruben.strexleadsystem.view.fragment.LeadFragment
-import sls.ruben.strexleadsystem.view.fragment.dummy.DummyContent
 import sls.ruben.strexleadsystem.viewModel.LoginViewModel
 
-class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LeadFragment.OnListFragmentInteractionListener {
+class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LeadFragment.OnListFragmentInteractionListener, CompanyFragment.OnListFragmentInteractionListener {
 
     // This is BAD!!!
     var showAll = false
-    lateinit var loginViewModel: LoginViewModel
+    lateinit var viewModel: LoginViewModel
+    private val leadFragment = LeadFragment()
+    private val companyFragment = CompanyFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_view)
         setSupportActionBar(toolbar)
 
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -42,6 +45,12 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        if (savedInstanceState == null) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.add(R.id.fragment, leadFragment, "FRAGMENT_LEAD")
+            fragmentTransaction.commit()
+        }
     }
 
     override fun onBackPressed() {
@@ -66,6 +75,13 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                         Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 true
             }
+            R.id.menu_refresh -> {
+                for (fragment in supportFragmentManager.fragments) {
+                    if (fragment != null && fragment.isVisible)
+                        fragment.onOptionsItemSelected(item)
+                }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -73,10 +89,20 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_lead -> {
-
+                val fragment = (supportFragmentManager.findFragmentByTag("FRAGMENT_LEAD") as LeadFragment?)
+                if (fragment == null) {
+                    val fragmentTransaction = supportFragmentManager.beginTransaction()
+                    fragmentTransaction.replace(R.id.fragment, leadFragment, "FRAGMENT_LEAD")
+                    fragmentTransaction.commit()
+                }
             }
             R.id.nav_company -> {
-
+                val fragment = (supportFragmentManager.findFragmentByTag("FRAGMENT_COMPANY") as CompanyFragment?)
+                if (fragment == null) {
+                    val fragmentTransaction = supportFragmentManager.beginTransaction()
+                    fragmentTransaction.replace(R.id.fragment, companyFragment, "FRAGMENT_COMPANY")
+                    fragmentTransaction.commit()
+                }
             }
             R.id.nav_report -> {
 
@@ -85,7 +111,7 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
             }
             R.id.nav_logout -> {
-                loginViewModel.logout()
+                viewModel.logout()
                 gotoLogin()
             }
         }
@@ -99,8 +125,18 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         finish()
     }
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
-        Snackbar.make(fab, item!!.details, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+    override fun onOptionsMenuClosed(menu: Menu?) {
+        super.onOptionsMenuClosed(menu)
+    }
+
+    override fun onListFragmentInteraction(item: LeadModel?) {
+        // TODO: Goto lead view/edit view
+        Snackbar.make(fab, "${item!!.firstname} ${item.lastname}", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+    }
+
+    override fun onListFragmentInteraction(item: CompanyModel?) {
+        // TODO: Goto company view/edit view
+        Snackbar.make(fab, item!!.name!!, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
     }
 
 }
