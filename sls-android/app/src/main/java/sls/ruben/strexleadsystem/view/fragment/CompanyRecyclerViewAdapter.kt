@@ -1,5 +1,6 @@
 package sls.ruben.strexleadsystem.view.fragment
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,20 +8,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_lead.view.*
 import sls.ruben.strexleadsystem.R
-import sls.ruben.strexleadsystem.model.LeadModel
-import sls.ruben.strexleadsystem.view.fragment.LeadFragment.OnListFragmentInteractionListener
+import sls.ruben.strexleadsystem.model.CompanyModel
+import sls.ruben.strexleadsystem.view.fragment.CompanyFragment.OnListFragmentInteractionListener
 
-class LeadRecyclerViewAdapter(
-        private var mValues: List<LeadModel>,
+class CompanyRecyclerViewAdapter(
+        private var mValues: List<CompanyModel>,
         private val mListener: OnListFragmentInteractionListener?)
-    : RecyclerView.Adapter<LeadRecyclerViewAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<CompanyRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as LeadModel
-            //TODO: Handel the click event for a lead cell being tapped
+            val item = v.tag as CompanyModel
+            // Notify the active callbacks interface (the activity, if the fragment is attached to
+            // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
         }
     }
@@ -33,8 +35,9 @@ class LeadRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.firstname
-        holder.mContentView.text = item.lastname
+        //TODO: Add mode fields to view
+        holder.mIdView.text = item.name
+        holder.mContentView.text = item.address
 
         with(holder.mView) {
             tag = item
@@ -44,8 +47,8 @@ class LeadRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    fun updateItems(items: List<LeadModel>) {
-        mValues = items
+    fun updateItems(companies: List<CompanyModel>) {
+        mValues = companies
         notifyDataSetChanged()
     }
 

@@ -8,13 +8,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
-        android:name="sls.ruben.strexleadsystem.view.fragment.LeadFragment"
+        android:name="sls.ruben.strexleadsystem.view.fragment.CompanyFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".view.fragment.LeadFragment"
-        tools:listitem="@layout/fragment_lead" />
+        tools:context=".view.fragment.CompanyFragment"
+        tools:listitem="@layout/fragment_company" />
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

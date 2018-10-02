@@ -38,5 +38,6 @@
         completions."
     </string>
     <string name="action_logout">Logout</string>
+    <string name="menu_refresh">Refresh</string>
 
 </resources>

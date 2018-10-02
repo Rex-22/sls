@@ -14,52 +14,51 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import sls.ruben.strexleadsystem.R
-import sls.ruben.strexleadsystem.model.LeadModel
-import sls.ruben.strexleadsystem.viewModel.LeadViewModel
+import sls.ruben.strexleadsystem.model.CompanyModel
+import sls.ruben.strexleadsystem.viewModel.CompanyViewModel
 
-class LeadFragment : Fragment() {
+class CompanyFragment : Fragment() {
 
-    // TODO: Customize parameters
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
 
-    private var leads: List<LeadModel> = listOf(LeadModel())
-    private lateinit var viewModel: LeadViewModel
+    private var companies: List<CompanyModel> = listOf(CompanyModel())
+    private lateinit var viewModel: CompanyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Load the leads from the server
+        // Load companies from the server
         //TODO: Loading screen
-        viewModel = ViewModelProviders.of(this).get(LeadViewModel::class.java)
-        viewModel.getLeads()
-        viewModel.leadModel.observe(this@LeadFragment, Observer {
-            leads = it!!
-            this@LeadFragment.refreshList(leads)
+        viewModel = ViewModelProviders.of(this).get(CompanyViewModel::class.java)
+        viewModel.getCompanies()
+        viewModel.companyModel.observe(this@CompanyFragment, Observer {
+            companies = it!!
+            this@CompanyFragment.refreshList(companies)
         })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_lead_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_company_list, container, false)
         // Set the adapter
         with(view.findViewById<RecyclerView>(R.id.list)) {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = LeadRecyclerViewAdapter(leads, listener)
+            adapter = CompanyRecyclerViewAdapter(companies, listener)
         }
         view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).setOnRefreshListener {
-            viewModel.getLeads()
+            viewModel.getCompanies()
         }
         return view
     }
 
-    private fun refreshList(leads: List<LeadModel>) {
+    private fun refreshList(companies: List<CompanyModel>) {
         val listView = view!!.findViewById<RecyclerView>(R.id.list)
-        (listView.adapter as LeadRecyclerViewAdapter?)!!.updateItems(leads)
+        (listView.adapter as CompanyRecyclerViewAdapter).updateItems(companies)
         view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).isRefreshing = false
     }
 
@@ -80,7 +79,7 @@ class LeadFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.menu_refresh) {
             this.view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).isRefreshing = true
-            viewModel.getLeads()
+            viewModel.getCompanies()
             return true
         }
         return super.onContextItemSelected(item)
@@ -98,21 +97,17 @@ class LeadFragment : Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: LeadModel?)
+        fun onListFragmentInteraction(item: CompanyModel?)
     }
 
     companion object {
 
-        // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
                 LeadFragment().apply {
                     arguments = Bundle().apply {
-
                     }
                 }
     }
