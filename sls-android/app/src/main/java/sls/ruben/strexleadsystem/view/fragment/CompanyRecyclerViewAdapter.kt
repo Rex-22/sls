@@ -12,7 +12,7 @@ import sls.ruben.strexleadsystem.model.CompanyModel
 import sls.ruben.strexleadsystem.view.fragment.CompanyFragment.OnListFragmentInteractionListener
 
 class CompanyRecyclerViewAdapter(
-        private var mValues: List<CompanyModel>,
+        private var mValues: MutableList<CompanyModel>,
         private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<CompanyRecyclerViewAdapter.ViewHolder>() {
 
@@ -34,6 +34,7 @@ class CompanyRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (mValues.isEmpty()) return
         val item = mValues[position]
         //TODO: Add mode fields to view
         holder.mIdView.text = item.name
@@ -47,9 +48,18 @@ class CompanyRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    fun updateItems(companies: List<CompanyModel>) {
+    fun updateItems(companies: MutableList<CompanyModel>) {
         mValues = companies
         notifyDataSetChanged()
+    }
+
+    fun removeAt(position: Int) {
+        mValues.removeAt(position)
+        notifyItemChanged(position)
+    }
+
+    fun getItem(position: Int): CompanyModel {
+        return mValues[position]
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {

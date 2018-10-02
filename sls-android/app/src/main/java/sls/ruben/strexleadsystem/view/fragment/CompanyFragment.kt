@@ -6,24 +6,23 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import sls.ruben.strexleadsystem.R
 import sls.ruben.strexleadsystem.model.CompanyModel
+import sls.ruben.strexleadsystem.util.SwipeToDeleteCallback
 import sls.ruben.strexleadsystem.viewModel.CompanyViewModel
 
 class CompanyFragment : Fragment() {
 
-    private var columnCount = 1
-
     private var listener: OnListFragmentInteractionListener? = null
 
-    private var companies: List<CompanyModel> = listOf(CompanyModel())
+    private var companies: MutableList<CompanyModel> = mutableListOf()
     private lateinit var viewModel: CompanyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +43,23 @@ class CompanyFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_company_list, container, false)
         // Set the adapter
         with(view.findViewById<RecyclerView>(R.id.list)) {
-            layoutManager = when {
-                columnCount <= 1 -> LinearLayoutManager(context)
-                else -> GridLayoutManager(context, columnCount)
-            }
             adapter = CompanyRecyclerViewAdapter(companies, listener)
+            val swipeHandler = object : SwipeToDeleteCallback(context) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val builder = AlertDialog.Builder(context)
+                    builder.setMessage("Deleting a company will delete all leads related to that company")
+                            .setPositiveButton("Yes") { _, _ ->
+                                viewModel.removeCompany((adapter as CompanyRecyclerViewAdapter).getItem(viewHolder.adapterPosition))
+                                (adapter as CompanyRecyclerViewAdapter).removeAt(viewHolder.adapterPosition)
+                            }
+                            .setNegativeButton("No") { dialogInterface, _ ->
+                                refreshList(companies)
+                                dialogInterface.dismiss()
+                            }.show()
+                }
+            }
+            val itemTouchHelper = ItemTouchHelper(swipeHandler)
+            itemTouchHelper.attachToRecyclerView(this)
         }
         view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).setOnRefreshListener {
             viewModel.getCompanies()
@@ -56,7 +67,7 @@ class CompanyFragment : Fragment() {
         return view
     }
 
-    private fun refreshList(companies: List<CompanyModel>) {
+    private fun refreshList(companies: MutableList<CompanyModel>) {
         val listView = view!!.findViewById<RecyclerView>(R.id.list)
         (listView.adapter as CompanyRecyclerViewAdapter).updateItems(companies)
         view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).isRefreshing = false
@@ -90,25 +101,8 @@ class CompanyFragment : Fragment() {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: CompanyModel?)
-    }
-
-    companion object {
-
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-                LeadFragment().apply {
-                    arguments = Bundle().apply {
-                    }
-                }
     }
 }

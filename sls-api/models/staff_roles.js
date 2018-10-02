@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     underscored: true,
     timestamps: true,
-    paranoid: true
+    paranoid: false
   });
   staff_roles.associate = function(models) {
   };

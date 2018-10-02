@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     underscored: true,
     timestamps: true,
-    deletedAt: false
+    deletedAt: false,
+    paranoid: false,
   });
   role.associate = function(models) {
     role.belongsToMany(models.staff,  {

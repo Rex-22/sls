@@ -42,4 +42,7 @@ class MasterRepository {
         return api.removeLead(TOKEN, id)
     }
 
+    fun removeCompany(id: Int?): Flowable<Response<okhttp3.ResponseBody>> {
+        return api.removeCompany(TOKEN, id)
+    }
 }

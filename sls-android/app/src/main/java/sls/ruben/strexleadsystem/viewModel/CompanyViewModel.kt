@@ -14,8 +14,8 @@ class CompanyViewModel : ViewModel(), OnConnectionTimeoutListeners {
 
     private val masterRepository = MasterRepository()
 
-    private val _companyModel = MutableLiveData<List<CompanyModel>>()
-    val companyModel: LiveData<List<CompanyModel>>
+    private val _companyModel = MutableLiveData<MutableList<CompanyModel>>()
+    val companyModel: LiveData<MutableList<CompanyModel>>
         get() = _companyModel
 
     init {
@@ -29,15 +29,28 @@ class CompanyViewModel : ViewModel(), OnConnectionTimeoutListeners {
                 .subscribe { response ->
                     if (response.isSuccessful) {
                         val model = response.body()!!
-                        model[0].errorCode = Error.NONE
-                        _companyModel.postValue(model)
+                        if (model.isNotEmpty()) {
+                            model[0].errorCode = Error.NONE
+                            _companyModel.postValue(model.toMutableList())
+                        } else {
+                            _companyModel.postValue(mutableListOf())
+                        }
                     } else {
                         //TODO: Error handling
                     }
                 }
     }
 
+
     override fun onConnectionTimeout() {
-        _companyModel.postValue(listOf(CompanyModel(errorCode = Error.TIME_OUT)))
+        _companyModel.postValue(mutableListOf(CompanyModel(errorCode = Error.TIME_OUT)))
     }
+
+    @SuppressLint("CheckResult")
+    fun removeCompany(item: CompanyModel) {
+        masterRepository.removeCompany(item.id)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe()
+    }
+
 }

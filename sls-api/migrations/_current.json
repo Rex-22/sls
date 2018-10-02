@@ -28,9 +28,6 @@
                 "updated_at": {
                     "allowNull": false,
                     "seqType": "Sequelize.DATE"
-                },
-                "deleted_at": {
-                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -86,16 +83,13 @@
                     "allowNull": false,
                     "seqType": "Sequelize.DATE"
                 },
-                "deleted_at": {
-                    "seqType": "Sequelize.DATE"
-                },
                 "company_id": {
                     "allowNull": true,
                     "references": {
                         "model": "companies",
                         "key": "id"
                     },
-                    "onDelete": "SET NULL",
+                    "onDelete": "CASCADE",
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
@@ -182,9 +176,6 @@
                 "updated_at": {
                     "allowNull": false,
                     "seqType": "Sequelize.DATE"
-                },
-                "deleted_at": {
-                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -221,13 +212,10 @@
                 "updated_at": {
                     "allowNull": false,
                     "seqType": "Sequelize.DATE"
-                },
-                "deleted_at": {
-                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
         }
     },
-    "revision": 6
+    "revision": 1
 }

@@ -5,8 +5,10 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
+ * createTable "companies", deps: []
  * createTable "roles", deps: []
  * createTable "staffs", deps: []
+ * createTable "leads", deps: [companies, staffs]
  * createTable "staff_roles", deps: [staffs, roles]
  *
  **/
@@ -14,11 +16,46 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2018-08-16T14:02:16.606Z",
+    "created": "2018-10-02T20:56:38.021Z",
     "comment": ""
 };
 
 var migrationCommands = [{
+        fn: "createTable",
+        params: [
+            "companies",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "allowNull": false
+                },
+                "name": {
+                    "type": Sequelize.STRING
+                },
+                "address": {
+                    "type": Sequelize.STRING
+                },
+                "tell": {
+                    "type": Sequelize.STRING
+                },
+                "website": {
+                    "type": Sequelize.STRING
+                },
+                "created_at": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                },
+                "updated_at": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                }
+            },
+            {}
+        ]
+    },
+    {
         fn: "createTable",
         params: [
             "roles",
@@ -75,7 +112,7 @@ var migrationCommands = [{
                     "type": Sequelize.STRING,
                     "validate": {
                         "isEmail": {
-                            "msg": "This is an invallid username"
+                            "msg": "This is an invallid email"
                         }
                     },
                     "unique": true
@@ -93,9 +130,83 @@ var migrationCommands = [{
                 "updated_at": {
                     "type": Sequelize.DATE,
                     "allowNull": false
+                }
+            },
+            {}
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "leads",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "allowNull": false
                 },
-                "deleted_at": {
+                "first_name": {
+                    "type": Sequelize.STRING
+                },
+                "last_name": {
+                    "type": Sequelize.STRING
+                },
+                "email": {
+                    "type": Sequelize.STRING,
+                    "validate": {
+                        "isEmail": {
+                            "msg": "This is an invallid email"
+                        }
+                    },
+                    "unique": true
+                },
+                "cell": {
+                    "type": Sequelize.STRING,
+                    "validate": {
+                        "isNumeric": {
+                            "msg": "Cell number can only be numeric"
+                        }
+                    }
+                },
+                "tell": {
+                    "type": Sequelize.STRING,
+                    "validate": {
+                        "isNumeric": {
+                            "msg": "Tell number can only be numeric"
+                        }
+                    }
+                },
+                "date_added": {
                     "type": Sequelize.DATE
+                },
+                "created_at": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                },
+                "updated_at": {
+                    "type": Sequelize.DATE,
+                    "allowNull": false
+                },
+                "company_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                },
+                "staff_id": {
+                    "type": Sequelize.INTEGER,
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "staffs",
+                        "key": "id"
+                    },
+                    "allowNull": true
                 }
             },
             {}
@@ -135,9 +246,6 @@ var migrationCommands = [{
                 "updated_at": {
                     "type": Sequelize.DATE,
                     "allowNull": false
-                },
-                "deleted_at": {
-                    "type": Sequelize.DATE
                 }
             },
             {}

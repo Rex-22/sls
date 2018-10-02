@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     underscored: true,
     timestamps: true,
-    paranoid: true,
+    paranoid: false,
     hooks: {
       beforeSave: (staff, options) => {
         return new Promise((resolve, reject) => {

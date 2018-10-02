@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     underscored: true,
     timestamps: true,
-    paranoid: true
+    paranoid: false
   });
   companies.associate = function (models) {
-    companies.hasMany(models.leads)
+    companies.hasMany(models.leads, {onDelete: 'CASCADE'})  
   };
+
   return companies;
 };

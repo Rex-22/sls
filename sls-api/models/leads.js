@@ -32,11 +32,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     underscored: true,
     timestamps: true,
-    paranoid: true
+    paranoid: false,
   });
   leads.associate = function(models) {
     leads.belongsTo(models.staff);
-    leads.belongsTo(models.companies);
+    leads.belongsTo(models.companies, { onDelete: 'CASCADE'});
   };
   return leads;
 };
