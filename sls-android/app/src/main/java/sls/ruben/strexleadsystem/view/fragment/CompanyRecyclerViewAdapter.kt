@@ -53,8 +53,8 @@ class CompanyRecyclerViewAdapter(
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
+        val mIdView: TextView = mView.lead_name
+        val mContentView: TextView = mView.lead_company
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"

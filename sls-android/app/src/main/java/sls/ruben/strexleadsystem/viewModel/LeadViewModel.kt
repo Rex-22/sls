@@ -14,8 +14,8 @@ class LeadViewModel : ViewModel(), OnConnectionTimeoutListeners {
 
     private val masterRepository = MasterRepository()
 
-    private val _leadModel = MutableLiveData<List<LeadModel>>()
-    val leadModel: LiveData<List<LeadModel>>
+    private val _leadModel = MutableLiveData<MutableList<LeadModel>>()
+    val leadModel: LiveData<MutableList<LeadModel>>
         get() = _leadModel
 
     init {
@@ -29,15 +29,26 @@ class LeadViewModel : ViewModel(), OnConnectionTimeoutListeners {
                 .subscribe { response ->
                     if (response.isSuccessful) {
                         val model = response.body()!!
-                        model[0].errorCode = Error.NONE
-                        _leadModel.postValue(model)
+                        if (!model.isEmpty()) {
+                            model[0].errorCode = Error.NONE
+                            _leadModel.postValue(model.toMutableList())
+                        } else {
+                            _leadModel.postValue(mutableListOf())
+                        }
                     } else {
-                        //TODO: Error handeling
+                        //TODO: Error handling
                     }
                 }
     }
 
     override fun onConnectionTimeout() {
-        _leadModel.postValue(listOf(LeadModel(errorCode = Error.TIME_OUT)))
+        _leadModel.postValue(mutableListOf(LeadModel(errorCode = Error.TIME_OUT)))
+    }
+
+    @SuppressLint("CheckResult")
+    fun removeLead(item: LeadModel) {
+        masterRepository.removeLead(item.id)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe()
     }
 }

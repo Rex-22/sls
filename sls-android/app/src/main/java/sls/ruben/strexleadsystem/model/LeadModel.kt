@@ -17,6 +17,7 @@ data class LeadModel(
         @SerializedName("cell") var cell: String? = "",
         @SerializedName("staff_id") var staffId: String? = "",
         @SerializedName("company_id") var companyId: String? = "",
+        @Ignore @SerializedName("company") var company: CompanyModel = CompanyModel(),
 
         /* Meta data */
         @Ignore var errorCode: Error = Error.NONE

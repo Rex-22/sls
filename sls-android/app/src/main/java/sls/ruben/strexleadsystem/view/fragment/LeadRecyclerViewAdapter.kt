@@ -1,5 +1,6 @@
 package sls.ruben.strexleadsystem.view.fragment
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import sls.ruben.strexleadsystem.model.LeadModel
 import sls.ruben.strexleadsystem.view.fragment.LeadFragment.OnListFragmentInteractionListener
 
 class LeadRecyclerViewAdapter(
-        private var mValues: List<LeadModel>,
+        private var mValues: MutableList<LeadModel>,
         private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<LeadRecyclerViewAdapter.ViewHolder>() {
 
@@ -31,10 +32,12 @@ class LeadRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (mValues.isEmpty()) return
         val item = mValues[position]
-        holder.mIdView.text = item.firstname
-        holder.mContentView.text = item.lastname
+        holder.leadName.text = "${item.firstname} ${item.lastname}"
+        holder.leadCompany.text = item.company.name
 
         with(holder.mView) {
             tag = item
@@ -44,17 +47,22 @@ class LeadRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    fun updateItems(items: List<LeadModel>) {
+    fun updateItems(items: MutableList<LeadModel>) {
         mValues = items
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
+    fun removeAt(position: Int) {
+        mValues.removeAt(position)
+        notifyItemChanged(position)
+    }
 
-        override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
-        }
+    fun getItem(position: Int): LeadModel {
+        return mValues[position]
+    }
+
+    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+        val leadName: TextView = mView.lead_name
+        val leadCompany: TextView = mView.lead_company
     }
 }

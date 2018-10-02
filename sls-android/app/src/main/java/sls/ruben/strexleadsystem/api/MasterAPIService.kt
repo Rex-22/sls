@@ -2,10 +2,7 @@ package sls.ruben.strexleadsystem.api
 
 import io.reactivex.Flowable
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 import sls.ruben.strexleadsystem.model.CompanyModel
 import sls.ruben.strexleadsystem.model.LeadModel
 import sls.ruben.strexleadsystem.model.StaffModel
@@ -21,6 +18,12 @@ interface MasterAPIService {
     fun getLeads(
             @Header("Authorization") token: String
     ): Flowable<Response<List<LeadModel>>>
+
+    @DELETE("leads/{id}")
+    fun removeLead(
+            @Header("Authorization") token: String,
+            @Path("id") id: Int?
+    ): Flowable<Response<okhttp3.ResponseBody>>
 
     @GET("companies")
     fun getCompanies(
