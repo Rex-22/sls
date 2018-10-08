@@ -15,6 +15,7 @@ data class LeadModel(
         @SerializedName("last_name") var lastname: String? = "",
         @SerializedName("tell") var tell: String? = "",
         @SerializedName("cell") var cell: String? = "",
+        @SerializedName("email") var email: String? = "",
         @SerializedName("staff_id") var staffId: String? = "",
         @SerializedName("company_id") var companyId: String? = "",
         @Ignore @SerializedName("company") var company: CompanyModel = CompanyModel(),

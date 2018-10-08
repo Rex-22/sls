@@ -16,7 +16,7 @@ object ApiService {
 
     private const val API_VERSION: String = "v1"
     //    val API_URL = "http://127.0.0.1:3000/$API_VERSION/" // When using an emulator, use this one
-    const val API_URL = "http://f70208da.ngrok.io/$API_VERSION/"
+    const val API_URL = "http://192.168.43.179:3000/$API_VERSION/"
 
     private var listeners = ArrayList<OnConnectionTimeoutListeners>()
 
