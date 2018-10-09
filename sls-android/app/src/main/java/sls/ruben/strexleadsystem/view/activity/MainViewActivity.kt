@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -16,19 +17,27 @@ import sls.ruben.strexleadsystem.R
 import sls.ruben.strexleadsystem.model.CompanyModel
 import sls.ruben.strexleadsystem.model.LeadModel
 import sls.ruben.strexleadsystem.view.fragment.CompanyFragment
+import sls.ruben.strexleadsystem.view.fragment.LeadEditFragment
 import sls.ruben.strexleadsystem.view.fragment.LeadFragment
+import sls.ruben.strexleadsystem.viewModel.LeadViewModel
 import sls.ruben.strexleadsystem.viewModel.LoginViewModel
 
-class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LeadFragment.OnListFragmentInteractionListener, CompanyFragment.OnListFragmentInteractionListener {
+class MainViewActivity :
+        AppCompatActivity(),
+        NavigationView.OnNavigationItemSelectedListener,
+        LeadFragment.OnListFragmentInteractionListener,
+        CompanyFragment.OnListFragmentInteractionListener,
+        LeadEditFragment.OnFragmentInteractionListener {
 
     // This is BAD!!!
     var showAll = false
-    lateinit var viewModel: LoginViewModel
+    lateinit var loginViewModel: LoginViewModel
     private val leadFragment = LeadFragment()
     private val companyFragment = CompanyFragment()
+    private val leadEditFragment = LeadEditFragment()
 
     private val TAG_LEAD = "FRAGMENT_LEAD"
-    private val TAG_COMPANY = "FRAGMENT_LEAD"
+    private val TAG_COMPANY = "FRAGMENT_COMPANY"
     private val TAG_LEAD_EDIT = "FRAGMENT_LEAD_EDIT"
     private val TAG_COMPANY_EDIT = "FRAGMENT_COMPANY_EDIT"
 
@@ -37,7 +46,7 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         setContentView(R.layout.activity_main_view)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -94,10 +103,10 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_lead -> {
-                changeFragment(TAG_LEAD)
+                changeFragment(TAG_LEAD, leadFragment)
             }
             R.id.nav_company -> {
-                changeFragment(TAG_COMPANY)
+                changeFragment(TAG_COMPANY, companyFragment)
             }
             R.id.nav_report -> {
 
@@ -106,7 +115,7 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
             }
             R.id.nav_logout -> {
-                viewModel.logout()
+                loginViewModel.logout()
                 gotoLogin()
             }
         }
@@ -115,13 +124,11 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         return true
     }
 
-    private fun changeFragment(tag: String) {
-        val fragment = supportFragmentManager.findFragmentByTag(tag)
-        if (fragment == null) {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment, companyFragment, tag)
-            fragmentTransaction.commit()
-        }
+    private fun changeFragment(tag: String, fragment: Fragment, popback: Boolean = false) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment, fragment, tag)
+        fragmentTransaction.commit()
+        if (popback) fragmentTransaction.addToBackStack(null)
     }
 
     private fun gotoLogin() {
@@ -130,11 +137,15 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
     override fun onListFragmentInteraction(item: LeadModel?) {
-        Snackbar.make(fab, "${item!!.firstname} ${item.lastname}", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+        changeFragment(TAG_LEAD_EDIT, leadEditFragment, true)
     }
 
     override fun onListFragmentInteraction(item: CompanyModel?) {
         Snackbar.make(fab, item!!.name!!, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+    }
+
+    override fun onFragmentInteraction(leadInfo: LeadModel) {
+        // Conformation
     }
 
 }

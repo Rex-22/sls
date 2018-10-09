@@ -21,7 +21,6 @@ class LeadRecyclerViewAdapter(
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as LeadModel
-            //TODO: Handel the click event for a lead cell being tapped
             mListener?.onListFragmentInteraction(item)
         }
     }

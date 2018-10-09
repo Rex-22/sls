@@ -5,7 +5,8 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "acl": "^0.4.11",
@@ -34,6 +35,6 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-strongloop": "^2.1.0",
     "eslint-plugin-import": "^2.13.0",
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.18.4"
   }
 }

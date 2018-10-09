@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import sls.ruben.strexleadsystem.util.Error
 
 
-@Entity(tableName = "Lead")
+@Entity(tableName = "Company")
 data class CompanyModel(
         @PrimaryKey
         @SerializedName("id") var id: Int? = 0,

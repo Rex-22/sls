@@ -20,6 +20,17 @@ interface MasterAPIService {
             @Header("Authorization") token: String
     ): Flowable<Response<List<LeadModel>>>
 
+    @POST("leads")
+    fun addLead(
+            @Header("Authorization")token: String,
+            @Body lead: LeadModel): Flowable<Response<ResponseBody>>
+
+    @PUT("leads/{id}")
+    fun updateLead(
+            @Header("Authorization")token: String,
+            @Path("id")id: Int?,
+            @Body lead: LeadModel): Flowable<Response<ResponseBody>>
+
     @DELETE("leads/{id}")
     fun removeLead(
             @Header("Authorization") token: String,
@@ -31,10 +42,21 @@ interface MasterAPIService {
             @Header("Authorization") token: String
     ): Flowable<Response<List<CompanyModel>>>
 
+    @POST("companies")
+    fun addCompany(
+            @Header("Authorization")token: String,
+            @Body company: CompanyModel): Flowable<Response<ResponseBody>>
+
+
+    @PUT("companies/{id}")
+    fun updateCompany(
+            @Header("Authorization")token: String,
+            @Path("id")id: Int?,
+            @Body company: CompanyModel): Flowable<Response<ResponseBody>>
+
     @DELETE("companies/{id}")
     fun removeCompany(
             @Header("Authorization") token: String,
             @Path("id") id: Int?
     ): Flowable<Response<ResponseBody>>
-
 }

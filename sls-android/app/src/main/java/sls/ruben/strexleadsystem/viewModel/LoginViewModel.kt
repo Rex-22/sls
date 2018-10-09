@@ -9,7 +9,7 @@ import sls.ruben.strexleadsystem.model.StaffModel
 import sls.ruben.strexleadsystem.prefService
 import sls.ruben.strexleadsystem.repository.MasterRepository
 import sls.ruben.strexleadsystem.util.Error
-import tech.bitcube.sabu.network.OnConnectionTimeoutListeners
+import sls.ruben.strexleadsystem.api.OnConnectionTimeoutListeners
 
 class LoginViewModel: ViewModel(), OnConnectionTimeoutListeners {
 

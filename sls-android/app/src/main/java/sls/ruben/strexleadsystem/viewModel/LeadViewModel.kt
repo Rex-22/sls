@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
+import retrofit2.Response
+import sls.ruben.strexleadsystem.App
 import sls.ruben.strexleadsystem.model.LeadModel
 import sls.ruben.strexleadsystem.repository.MasterRepository
 import sls.ruben.strexleadsystem.util.Error
-import tech.bitcube.sabu.network.OnConnectionTimeoutListeners
+import sls.ruben.strexleadsystem.api.OnConnectionTimeoutListeners
 
 class LeadViewModel : ViewModel(), OnConnectionTimeoutListeners {
 
@@ -33,7 +36,9 @@ class LeadViewModel : ViewModel(), OnConnectionTimeoutListeners {
                             model[0].errorCode = Error.NONE
                             _leadModel.postValue(model.toMutableList())
                         } else {
-                            _leadModel.postValue(mutableListOf())
+                            masterRepository.database.leadDao().getAll().subscribe {
+                                _leadModel.postValue(it.toMutableList())
+                            }
                         }
                     } else {
                         //TODO: Error handling
@@ -45,10 +50,22 @@ class LeadViewModel : ViewModel(), OnConnectionTimeoutListeners {
         _leadModel.postValue(mutableListOf(LeadModel(errorCode = Error.TIME_OUT)))
     }
 
-    @SuppressLint("CheckResult")
-    fun removeLead(item: LeadModel) {
-        masterRepository.removeLead(item.id)
+    fun addLead(lead: LeadModel) {
+        masterRepository.addLead(lead)
                 .subscribeOn(Schedulers.newThread())
                 .subscribe()
+    }
+
+    fun updateLead(lead: LeadModel, leadUpdateCallback: (Response<ResponseBody>) -> Unit = {}) {
+        masterRepository.updateLead(lead)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(leadUpdateCallback)
+    }
+
+    @SuppressLint("CheckResult")
+    fun removeLead(item: LeadModel, leadRemovedCallback: (Response<ResponseBody>) -> Unit = {}) {
+        masterRepository.removeLead(item.id)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(leadRemovedCallback)
     }
 }

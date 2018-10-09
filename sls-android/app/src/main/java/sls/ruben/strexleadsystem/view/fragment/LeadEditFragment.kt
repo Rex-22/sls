@@ -6,24 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import sls.ruben.strexleadsystem.R
 import sls.ruben.strexleadsystem.model.LeadModel
 import sls.ruben.strexleadsystem.util.Error
+import sls.ruben.strexleadsystem.viewModel.LeadViewModel
 
 class LeadEditFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    lateinit var leadViewModel: LeadViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        leadViewModel = ViewModelProviders.of(this).get(LeadViewModel::class.java)
         return inflater.inflate(R.layout.fragment_lead_edit, container, false)
     }
 
-    fun onButtonPressed() {
+    fun onButtonPressed(view: View) {
         val lead = LeadModel(
                 firstname = "",
                 lastname = "",
@@ -35,7 +35,11 @@ class LeadEditFragment : Fragment() {
                 errorCode = Error.NONE
         )
 
-        // Save user data
+//
+//        leadViewModel.updateLead(lead, {
+////            if(it.isSuccessful)
+//                // TODO: Stop loding
+//        })
 
         listener?.onFragmentInteraction(lead)
     }
