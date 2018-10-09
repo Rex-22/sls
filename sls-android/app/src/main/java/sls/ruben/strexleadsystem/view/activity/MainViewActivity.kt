@@ -27,6 +27,11 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     private val leadFragment = LeadFragment()
     private val companyFragment = CompanyFragment()
 
+    private val TAG_LEAD = "FRAGMENT_LEAD"
+    private val TAG_COMPANY = "FRAGMENT_LEAD"
+    private val TAG_LEAD_EDIT = "FRAGMENT_LEAD_EDIT"
+    private val TAG_COMPANY_EDIT = "FRAGMENT_COMPANY_EDIT"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_view)
@@ -48,7 +53,7 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         if (savedInstanceState == null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.fragment, leadFragment, "FRAGMENT_LEAD")
+            fragmentTransaction.add(R.id.fragment, leadFragment, TAG_LEAD)
             fragmentTransaction.commit()
         }
     }
@@ -89,20 +94,10 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_lead -> {
-                val fragment = (supportFragmentManager.findFragmentByTag("FRAGMENT_LEAD") as LeadFragment?)
-                if (fragment == null) {
-                    val fragmentTransaction = supportFragmentManager.beginTransaction()
-                    fragmentTransaction.replace(R.id.fragment, leadFragment, "FRAGMENT_LEAD")
-                    fragmentTransaction.commit()
-                }
+                changeFragment(TAG_LEAD)
             }
             R.id.nav_company -> {
-                val fragment = (supportFragmentManager.findFragmentByTag("FRAGMENT_COMPANY") as CompanyFragment?)
-                if (fragment == null) {
-                    val fragmentTransaction = supportFragmentManager.beginTransaction()
-                    fragmentTransaction.replace(R.id.fragment, companyFragment, "FRAGMENT_COMPANY")
-                    fragmentTransaction.commit()
-                }
+                changeFragment(TAG_COMPANY)
             }
             R.id.nav_report -> {
 
@@ -120,22 +115,25 @@ class MainViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         return true
     }
 
+    private fun changeFragment(tag: String) {
+        val fragment = supportFragmentManager.findFragmentByTag(tag)
+        if (fragment == null) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragment, companyFragment, tag)
+            fragmentTransaction.commit()
+        }
+    }
+
     private fun gotoLogin() {
         startActivity(Intent(this, LoginViewActivity::class.java))
         finish()
     }
 
-    override fun onOptionsMenuClosed(menu: Menu?) {
-        super.onOptionsMenuClosed(menu)
-    }
-
     override fun onListFragmentInteraction(item: LeadModel?) {
-        // TODO: Goto lead view/edit view
         Snackbar.make(fab, "${item!!.firstname} ${item.lastname}", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
     }
 
     override fun onListFragmentInteraction(item: CompanyModel?) {
-        // TODO: Goto company view/edit view
         Snackbar.make(fab, item!!.name!!, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
     }
 
