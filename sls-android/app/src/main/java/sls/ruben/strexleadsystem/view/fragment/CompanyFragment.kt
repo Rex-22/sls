@@ -24,6 +24,7 @@ class CompanyFragment : Fragment() {
 
     private var companies: MutableList<CompanyModel> = mutableListOf()
     private lateinit var viewModel: CompanyViewModel
+    private var shouldRefresh: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +74,13 @@ class CompanyFragment : Fragment() {
         view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).isRefreshing = false
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        if (shouldRefresh)
+            refreshLeads()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnListFragmentInteractionListener) {
@@ -96,12 +104,16 @@ class CompanyFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
+    fun queueRefreshCompany() {
+        shouldRefresh = true
+    }
+
+    private fun refreshLeads() {
+        this.view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).isRefreshing = true
+        shouldRefresh = false
+        viewModel.getCompanies()
+    }
+
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: CompanyModel?)
     }

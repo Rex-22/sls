@@ -9,45 +9,41 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_lead_edit.*
+import kotlinx.android.synthetic.main.fragment_company_edit.*
 import sls.ruben.strexleadsystem.R
-import sls.ruben.strexleadsystem.model.LeadModel
-import sls.ruben.strexleadsystem.prefService
+import sls.ruben.strexleadsystem.model.CompanyModel
 import sls.ruben.strexleadsystem.util.Error
-import sls.ruben.strexleadsystem.viewModel.LeadViewModel
+import sls.ruben.strexleadsystem.viewModel.CompanyViewModel
 
-class LeadEditFragment : Fragment() {
+class CompanyEditFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var leadViewModel: LeadViewModel
-    private lateinit var lead: LeadModel
+    lateinit var companyViewModel: CompanyViewModel
+    private lateinit var company: CompanyModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        leadViewModel = ViewModelProviders.of(this).get(LeadViewModel::class.java)
+        companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel::class.java)
 
-        return inflater.inflate(R.layout.fragment_lead_edit, container, false)
+        return inflater.inflate(R.layout.fragment_company_edit, container, false)
     }
 
     private fun onSave(view: View) {
-        val lead = LeadModel(
-                id = lead.id,
-                firstname = edt_lead_name.text.toString(),
-                lastname = edt_lead_surname.text.toString(),
-                email = edt_email.text.toString(),
-                cell = edt_cell.text.toString(),
+        val company = CompanyModel(
+                id = company.id,
+                name = edt_company_name.text.toString(),
+                address = edt_company_address.text.toString(),
                 tell = edt_tell.text.toString(),
-                companyId = edt_company.text.toString(),
-                staffId = prefService.id,
+                website= edt_website.text.toString(),
                 errorCode = Error.NONE
         )
 
-        leadViewModel.updateLead(lead) {
-            Snackbar.make(view, "Lead Saved!", Snackbar.LENGTH_LONG).show()
+        companyViewModel.updateCompany(company) {
+            Snackbar.make(view, "Company Saved!", Snackbar.LENGTH_LONG).show()
             this.fragmentManager!!.popBackStack()
         }
 
-        listener?.onFragmentInteraction(lead)
+        listener?.onFragmentInteraction(company)
     }
 
     override fun onAttach(context: Context) {
@@ -64,23 +60,21 @@ class LeadEditFragment : Fragment() {
         listener = null
     }
 
-    fun setLead(item: LeadModel?) {
-        lead = item!!
+    fun setCompany(item: CompanyModel?) {
+        company = item!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edt_lead_name.text?.clearAndAppend(lead.firstname!!)
-        edt_lead_surname.text?.clearAndAppend(lead.lastname!!)
-        edt_cell.text?.clearAndAppend(lead.cell!!)
-        edt_tell.text?.clearAndAppend(lead.tell!!)
-        edt_email.text?.clearAndAppend(lead.email!!)
-        edt_company.text?.clearAndAppend(lead.companyId!!)
+        edt_company_name.text?.clearAndAppend(company.name!!)
+        edt_company_address.text?.clearAndAppend(company.address!!)
+        edt_tell.text?.clearAndAppend(company.tell!!)
+        edt_website.text?.clearAndAppend(company.website!!)
         btnSave.setOnClickListener { onSave(it) }
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(leadInfo: LeadModel)
+        fun onFragmentInteraction(companyInfo: CompanyModel)
     }
 }
 

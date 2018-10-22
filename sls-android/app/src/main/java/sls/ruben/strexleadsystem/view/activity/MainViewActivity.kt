@@ -1,25 +1,30 @@
 package sls.ruben.strexleadsystem.view.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main_view.*
 import kotlinx.android.synthetic.main.app_bar_main_view.*
+import kotlinx.android.synthetic.main.nav_header_main_view.*
 import sls.ruben.strexleadsystem.R
 import sls.ruben.strexleadsystem.model.CompanyModel
 import sls.ruben.strexleadsystem.model.LeadModel
+import sls.ruben.strexleadsystem.view.fragment.CompanyEditFragment
 import sls.ruben.strexleadsystem.view.fragment.CompanyFragment
 import sls.ruben.strexleadsystem.view.fragment.LeadEditFragment
 import sls.ruben.strexleadsystem.view.fragment.LeadFragment
-import sls.ruben.strexleadsystem.viewModel.LeadViewModel
 import sls.ruben.strexleadsystem.viewModel.LoginViewModel
 
 class MainViewActivity :
@@ -27,13 +32,15 @@ class MainViewActivity :
         NavigationView.OnNavigationItemSelectedListener,
         LeadFragment.OnListFragmentInteractionListener,
         CompanyFragment.OnListFragmentInteractionListener,
-        LeadEditFragment.OnFragmentInteractionListener {
+        LeadEditFragment.OnFragmentInteractionListener,
+        CompanyEditFragment.OnFragmentInteractionListener {
 
     // This is BAD!!!
     var showAll = false
     lateinit var loginViewModel: LoginViewModel
     private val leadFragment = LeadFragment()
     private val companyFragment = CompanyFragment()
+    private val companyEditFragment = CompanyEditFragment()
     private val leadEditFragment = LeadEditFragment()
 
     private val TAG_LEAD = "FRAGMENT_LEAD"
@@ -47,6 +54,10 @@ class MainViewActivity :
         setSupportActionBar(toolbar)
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        loginViewModel.staffModel.observe(this, Observer {
+            staff_email.text = it.email
+            staff_name.text = it.username
+        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -65,6 +76,8 @@ class MainViewActivity :
             fragmentTransaction.add(R.id.fragment, leadFragment, TAG_LEAD)
             fragmentTransaction.commit()
         }
+
+        fab.show()
     }
 
     override fun onBackPressed() {
@@ -73,6 +86,8 @@ class MainViewActivity :
         } else {
             super.onBackPressed()
         }
+
+        fab.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -136,16 +151,30 @@ class MainViewActivity :
         finish()
     }
 
+    // Lead item selected
     override fun onListFragmentInteraction(item: LeadModel?) {
+        leadEditFragment.setLead(item)
+        fab.hide()
         changeFragment(TAG_LEAD_EDIT, leadEditFragment, true)
     }
 
+    // Company item selected
     override fun onListFragmentInteraction(item: CompanyModel?) {
-        Snackbar.make(fab, item!!.name!!, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+        companyEditFragment.setCompany(item)
+        fab.hide()
+        changeFragment(TAG_COMPANY_EDIT, companyEditFragment,true)
     }
 
+    // Lead Edit
     override fun onFragmentInteraction(leadInfo: LeadModel) {
-        // Conformation
+        leadFragment.queueRefreshLeads()
+        fab.show()
+    }
+
+    // Company Edit
+    override fun onFragmentInteraction(comapnyInfo: CompanyModel) {
+        companyFragment.queueRefreshCompany()
+        fab.show()
     }
 
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
+import retrofit2.Response
 import sls.ruben.strexleadsystem.model.CompanyModel
 import sls.ruben.strexleadsystem.repository.MasterRepository
 import sls.ruben.strexleadsystem.util.Error
@@ -51,6 +53,12 @@ class CompanyViewModel : ViewModel(), OnConnectionTimeoutListeners {
         masterRepository.removeCompany(item.id)
                 .subscribeOn(Schedulers.newThread())
                 .subscribe()
+    }
+
+    fun updateCompany(company: CompanyModel, companyUpdateCallback: (Response<ResponseBody>) -> Unit) {
+        masterRepository.updateCompany(company)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(companyUpdateCallback)
     }
 
 }

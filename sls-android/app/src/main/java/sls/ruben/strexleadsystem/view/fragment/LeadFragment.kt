@@ -23,6 +23,7 @@ class LeadFragment : Fragment() {
 
     private var leads: MutableList<LeadModel> = mutableListOf()
     private lateinit var viewModel: LeadViewModel
+    private var shouldRefresh: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +57,15 @@ class LeadFragment : Fragment() {
         view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).setOnRefreshListener {
             viewModel.getLeads()
         }
+
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (shouldRefresh)
+            refreshLeads()
     }
 
     private fun refreshList(leads: MutableList<LeadModel>) {
@@ -86,6 +95,16 @@ class LeadFragment : Fragment() {
             return true
         }
         return super.onContextItemSelected(item)
+    }
+
+    fun queueRefreshLeads() {
+        shouldRefresh = true
+    }
+
+    private fun refreshLeads() {
+        this.view!!.findViewById<SwipeRefreshLayout>(R.id.refreshLayout).isRefreshing = true
+        shouldRefresh = false
+        viewModel.getLeads()
     }
 
     interface OnListFragmentInteractionListener {
